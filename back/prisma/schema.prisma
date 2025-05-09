@@ -53,6 +53,6 @@ model Asistencias {
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
   deleteAt  DateTime?
-  Users     Users?    @relation(fields: [usersId], references: [id])
-  usersId   Int?
+  Users     Users?    @relation(fields: [userId], references: [id])
+  userId    Int?
 }
