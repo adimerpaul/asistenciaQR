@@ -27,11 +27,12 @@ export default defineConfig((/* ctx */) => {
       // 'fontawesome-v6',
       // 'eva-icons',
       // 'themify',
-      // 'line-awesome',
+      'line-awesome',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
       'roboto-font', // optional, you are not bound to it
-      'material-icons', // optional, you are not bound to it
+      'material-icons',
+      'material-icons-outlined',
     ],
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#build
@@ -41,7 +42,7 @@ export default defineConfig((/* ctx */) => {
         node: 'node20'
       },
 
-      vueRouterMode: 'hash', // available values: 'hash', 'history'
+      vueRouterMode: 'history', // available values: 'hash', 'history'
       // vueRouterBase,
       // vueDevtools,
       // vueOptionsAPI: false,
@@ -59,7 +60,7 @@ export default defineConfig((/* ctx */) => {
 
       // extendViteConf (viteConf) {},
       // viteVuePluginOptions: {},
-      
+
       // vitePlugins: [
       //   [ 'package-name', { ..pluginOptions.. }, { server: true, client: true } ]
       // ]
@@ -86,7 +87,12 @@ export default defineConfig((/* ctx */) => {
       // directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: [
+        'Dialog',
+        'Notify',
+        'Loading',
+        'LocalStorage'
+      ]
     },
 
     // animations: 'all', // --- includes all animations
