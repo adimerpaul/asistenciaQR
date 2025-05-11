@@ -107,6 +107,15 @@ export class UsersService {
     }
     async create(body) {
         const { username, password, name, role } = body;
+        // verificar que el nombre no este en uso
+        const userFind = await this.prisma.users.findUnique({
+            where: {
+                username: username,
+            },
+        });
+        if (userFind) {
+            throw new NotFoundException('El nombre de usuario ya existe');
+        }
         const user = await this.prisma.users.create({
             data: {
                 username,
