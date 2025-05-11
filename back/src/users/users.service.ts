@@ -10,6 +10,25 @@ export class UsersService {
       private prisma: PrismaService,
       private jwtService: JwtService,
   ) {}
+
+    async uploadAvatar(compressedFilename, id: number) {
+        const user = await this.prisma.users.findUnique({
+            where: {
+                id: id,
+            },
+        });
+        if (!user) {
+            throw new NotFoundException('Usuario no encontrado');
+        }
+        const updatedUser = await this.prisma.users.update({
+            where: {
+                id: id,
+            },
+            data: {
+                avatar: compressedFilename,
+            },
+        });
+    }
   async login(body) {
     console.log(body);
     const { username, password } = body;
