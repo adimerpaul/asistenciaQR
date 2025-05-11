@@ -40,4 +40,71 @@ export class UsersService {
       user: payload
     }
   }
+    async findAll() {
+        return this.prisma.users.findMany({
+            where: {
+                deleteAt: null
+            },
+            select: {
+                id: true,
+                username: true,
+                name: true,
+                role: true,
+                avatar: true
+            }
+        });
+    }
+    async create(body) {
+        const { username, password, name, role } = body;
+        const user = await this.prisma.users.create({
+            data: {
+                username,
+                password: await bcrypt.hash(password, 10),
+                name,
+                role,
+            },
+        });
+        return user;
+    }
+    async update(body, id) {
+        const user = await this.prisma.users.findUnique({
+            where: {
+                id: id,
+            },
+        });
+        if (!user) {
+            throw new NotFoundException('Usuario no encontrado');
+        }
+        const { username, name, role } = body;
+        const updatedUser = await this.prisma.users.update({
+            where: {
+                id: id,
+            },
+            data: {
+                username,
+                name,
+                role,
+            },
+        });
+    }
+
+    async delete(id) {
+        const user = await this.prisma.users.findUnique({
+            where: {
+                id: id,
+            },
+        });
+        if (!user) {
+            throw new NotFoundException('Usuario no encontrado');
+        }
+        const updatedUser = await this.prisma.users.update({
+          data: {
+            deleteAt: new Date(),
+          },
+          where: {
+            id: id,
+          }
+        });
+        return updatedUser;
+    }
 }
