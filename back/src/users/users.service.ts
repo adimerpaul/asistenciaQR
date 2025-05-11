@@ -1,11 +1,15 @@
 import {Injectable, NotFoundException} from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
+import {JwtService} from "@nestjs/jwt";
 const bcrypt = require('bcryptjs');
 
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+      private prisma: PrismaService,
+      private jwtService: JwtService,
+  ) {}
   async login(body) {
     console.log(body);
     const { username, password } = body;
@@ -22,8 +26,16 @@ export class UsersService {
     if (!isMatch) {
       throw new NotFoundException('Contraseña incorrecta');
     }
-    //
-    // async function main() {
-    //   const hash = await bcrypt.hash('123456', 10);
+    const payload = {
+        id: user.id,
+        username: user.username,
+        name: user.name,
+    }
+    const token = await this.jwtService.signAsync(payload);
+
+    return {
+      token: token,
+      user: payload
+    }
   }
 }

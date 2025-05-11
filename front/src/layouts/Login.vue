@@ -40,7 +40,7 @@
                         <template v-slot:control>
                           <q-carousel-control
                             position="top-left"
-                            :offset="[18, 18]"
+                            :offset="[5, 10]"
                             class="text-white rounded-borders"
                           >
                             <img src="logo-light.png" width="140"/>
@@ -147,35 +147,35 @@ export default {
       slide: 'math',
       slides: [
         {
-          name: 'math',
-          icon: 'calculate',
-          title: 'Matemáticas',
-          description: 'Desarrolla el pensamiento lógico y la resolución de problemas.'
+          name: 'automation',
+          icon: 'smart_toy',
+          title: 'Automatización de Procesos',
+          description: 'Un sistema de información reduce el trabajo manual y mejora la eficiencia operativa.'
         },
         {
-          name: 'science',
-          icon: 'science',
-          title: 'Ciencia',
-          description: 'Explora el mundo a través de la experimentación y el descubrimiento.'
+          name: 'access',
+          icon: 'cloud_queue',
+          title: 'Acceso a la Información',
+          description: 'Permite obtener datos en tiempo real desde cualquier dispositivo con conexión.'
         },
         {
-          name: 'book',
-          icon: 'menu_book',
-          title: 'Lectura',
-          description: 'Fomenta la comprensión, la creatividad y el pensamiento crítico.'
+          name: 'security',
+          icon: 'security',
+          title: 'Seguridad de Datos',
+          description: 'Protege la información mediante autenticación, permisos y respaldos automáticos.'
         },
         {
-          name: 'computer',
-          icon: 'computer',
-          title: 'Tecnología',
-          description: 'Aprende habilidades digitales esenciales para el futuro.'
+          name: 'decision',
+          icon: 'insights',
+          title: 'Toma de Decisiones',
+          description: 'Ayuda a tomar decisiones basadas en datos concretos, no suposiciones.'
         },
         {
-          name: 'sports',
-          icon: 'sports_soccer',
-          title: 'Educación Física',
-          description: 'Promueve la salud, el trabajo en equipo y la disciplina.'
-        },
+          name: 'integration',
+          icon: 'hub',
+          title: 'Integración de Áreas',
+          description: 'Conecta diferentes departamentos para un flujo de trabajo coordinado y eficiente.'
+        }
       ],
       login: {
         username: '',
@@ -198,7 +198,7 @@ export default {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  height: 100vh;
+  /*height: 100vh;*/
 }
 
 .bg-fondo {
