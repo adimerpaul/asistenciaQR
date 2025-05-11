@@ -5,7 +5,7 @@
         <div class="row">
           <div class="col-12 col-md-1"></div>
           <div :class="`col-12 col-md-10 ${$q.screen.gt.sm ? 'q-pa-lg' : ''}`">
-            <q-card flat bordered class="q-ma-lg q-pa-none">
+            <q-card flat bordered class="q-ma-xs q-pa-none">
               <q-card-section class="q-pa-none">
                 <div class="row">
                   <div class="col-12 col-md-6">
@@ -50,6 +50,7 @@
                     </div>
                   </div>
                   <div :class="'col-12 col-md-6 q-pa-md bg-white'">
+                    <q-form @submit.prevent="loginSubmit">
                     <div class="row q-ma-md">
                       <div class="col-12">
                         <div class="" style="color: #5F5189">Bienvenido a Vela Educa</div>
@@ -84,6 +85,7 @@
                             />
                           </template>
                         </q-input>
+<!--                        <pre>{{login}}</pre>-->
                       </div>
                       <div class="col-12">
                         <q-checkbox
@@ -99,22 +101,22 @@
                           label="Iniciar sesión"
                           color="positive"
                           no-caps
+                          type="submit"
                           class="full-width"/>
                       </div>
                       <div class="col-12">
-<!--                        <br>-->
-<!--                        <q-separator inset/>-->
-<!--                        olvide mi contraseña-->`
                         <div class="text-center">
                           <q-btn
                             flat
                             label="Olvidé mi contraseña"
                             color="primary"
                             no-caps
+                            :loading="loading"
                           />
                         </div>
                       </div>
                     </div>
+                    </q-form>
                   </div>
                 </div>
               </q-card-section>
@@ -187,7 +189,25 @@ export default {
     };
   },
   methods: {
-    // Define your methods here
+    loginSubmit() {
+      this.loading = true;
+      this.$axios.post('users/login', {
+        username: this.login.username,
+        password: this.login.password,
+      }).then(response => {
+        // console.log(response);
+        this.$store.user = response.data.user;
+        localStorage.setItem('tokenAsistencia', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+        this.$router.push('/');
+        this.$alert.success('Bienvenido ' + response.data.user.name);
+      }).catch(error => {
+        this.loading = false;
+        this.$alert.error(error.response.data.message || 'Error de conexión');
+      }).finally(() => {
+        this.loading = false;
+      });
+    },
   },
 };
 </script>

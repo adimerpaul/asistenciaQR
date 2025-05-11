@@ -1,6 +1,8 @@
-import { defineBoot } from '#q-app/wrappers'
+import {boot} from 'quasar/wrappers'
 import axios from 'axios'
-
+import {Alert} from "src/addons/Alert";
+import {useCounterStore} from "stores/example-store";
+import moment from "moment";
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;
 // If any client changes this (global) instance, it might be a
@@ -9,13 +11,64 @@ import axios from 'axios'
 // for each client)
 const api = axios.create({ baseURL: 'https://api.example.com' })
 
-export default defineBoot(({ app }) => {
+export default boot(({ app, router }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
 
-  app.config.globalProperties.$axios = axios
-  // ^ ^ ^ this will allow you to use this.$axios (for Vue Options API form)
-  //       so you won't necessarily have to import axios in each vue file
-
+  app.config.globalProperties.$axios = axios.create({ baseURL: import.meta.env.VITE_API_BACK })
+  // console.log(import.meta.env.VITE_API_BACK)
+  app.config.globalProperties.$alert = Alert
+  app.config.globalProperties.$store = useCounterStore()
+  app.config.globalProperties.$url = import.meta.env.VITE_API_BACK
+  app.config.globalProperties.$agencias = ['Oasis', 'Clinica']
+  app.config.globalProperties.$version = import.meta.env.VITE_VERSION
+  app.config.globalProperties.$filters = {
+    dateDmYHis (value) {
+      const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Set', 'Oct', 'Nov', 'Dic']
+      const mes = meses[moment(String(value)).format('MM') - 1]
+      if (!value) return ''
+      return moment(String(value)).format('DD') + ' ' + mes + ' ' + moment(String(value)).format('YYYY') + ' ' + moment(String(value)).format('hh:mm A')
+    },
+    date: (value) => {
+      if (!value) return ''
+      return new Date(value).toLocaleDateString()
+    },
+    time: (value) => {
+      if (!value) return ''
+      return new Date(value).toLocaleTimeString()
+    },
+    textCapitalize: (value) => {
+      if (!value) return ''
+      const lower = value.toLowerCase()
+      return lower.charAt(0).toUpperCase() + lower.slice(1)
+    },
+    color(role) {
+      if (role === 'Admin') return 'red'
+      if (role === 'Vendedor') return 'green'
+      return 'blue'
+    },
+    colorAgencia(agencia) {
+      if (agencia === 'Oasis') return 'indigo'
+      if (agencia === 'Clinica') return 'info'
+      return 'red'
+    }
+  }
+  const token = localStorage.getItem('tokenAsistencia')
+  if (token) {
+    app.config.globalProperties.$axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+    app.config.globalProperties.$axios.get('users/me').then(response => {
+      useCounterStore().isLogged = true
+      useCounterStore().user = response.data
+      localStorage.setItem('user', JSON.stringify(response.data))
+      // useCounterStore().permissions = response.data.permissions
+    }).catch(error => {
+      console.log(error)
+      localStorage.removeItem('tokenAsistencia')
+      useCounterStore().isLogged = false
+      // useCounterStore().permissions = []
+      useCounterStore().user = {}
+      router.push('/login')
+    })
+  }
   app.config.globalProperties.$api = api
   // ^ ^ ^ this will allow you to use this.$api (for Vue Options API form)
   //       so you can easily perform requests against your app's API
