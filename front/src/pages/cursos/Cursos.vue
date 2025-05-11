@@ -13,17 +13,55 @@
           <q-btn size="sm" flat icon="delete" color="negative" @click="eliminarCurso(props.row.id)" />
         </q-td>
       </template>
+      <template v-slot:body-cell-icono="props">
+        <q-td :props="props">
+          <q-icon :name="props.row.icono" size="md" />
+        </q-td>
+      </template>
+
     </q-table>
 
     <q-dialog v-model="dialog" persistent>
-      <q-card>
+      <q-card style="width: 400px">
         <q-card-section>
           <div class="text-h6">{{ curso.id ? 'Editar' : 'Nuevo' }} Curso</div>
         </q-card-section>
         <q-card-section>
           <q-form @submit="guardarCurso">
             <q-input v-model="curso.nombre" label="Nombre" dense outlined class="q-mb-sm" :rules="[v => !!v || 'Requerido']" />
-            <q-input v-model="curso.descripcion" label="Descripción" dense outlined type="textarea" />
+            <q-input v-model="curso.descripcion" label="Descripción" dense outlined type="textarea" hint="" />
+            <q-select
+              v-model="curso.icono"
+              :options="iconos"
+              label="Icono"
+              dense
+              outlined
+              option-label="label"
+              option-value="icon"
+              emit-value
+              map-options
+              use-input
+              fill-input
+              input-debounce="0"
+            >
+              <template v-slot:option="scope">
+                <q-item v-bind="scope.itemProps">
+                  <q-item-section avatar>
+                    <q-icon :name="scope.opt.icon" />
+<!--                    <q-icon :name="'fa-solid fa-flask-vial'" />-->
+                  </q-item-section>
+                  <q-item-section>{{ scope.opt.label }}</q-item-section>
+                </q-item>
+              </template>
+              <template v-slot:selected-item="scope">
+<!--                <q-item>-->
+<!--                  <q-item-section avatar>-->
+                    <q-icon :name="scope.opt.icon" />
+<!--                  </q-item-section>-->
+<!--&lt;!&ndash;                  <q-item-section>{{ scope.opt.label }}</q-item-section>&ndash;&gt;-->
+<!--                </q-item>-->
+              </template>
+            </q-select>
             <div class="text-right">
               <q-btn flat label="Cancelar" color="negative" v-close-popup />
               <q-btn label="Guardar" type="submit" color="primary" class="q-ml-sm" :loading="loading" />
@@ -49,6 +87,34 @@ export default {
         { name: 'actions', label: 'Acciones', align: 'center' },
         { name: 'nombre', label: 'Nombre', field: 'nombre', align: 'left' },
         { name: 'descripcion', label: 'Descripción', field: 'descripcion', align: 'left' },
+        { name: 'icono', label: 'Icono', field: 'icono', align: 'center' },
+
+      ],
+      iconos:[
+        { label: 'Quimica', icon: 'fa-solid fa-flask-vial' },
+        { label: 'Matemáticas', icon: 'fa-solid fa-book-open-reader' },
+        { label: 'Física', icon: 'fa-solid fa-chalkboard-user' },
+        { label: 'Biología', icon: 'fa-solid fa-graduation-cap' },
+        { label: 'Programación', icon: 'fa-solid fa-laptop-code' },
+        { label: 'Robótica', icon: 'fa-solid fa-robot' },
+        { label: 'Redes', icon: 'fa-solid fa-network-wired' },
+        { label: 'Base de Datos', icon: 'fa-solid fa-database' },
+        { label: 'Lenguajes', icon: 'fa-solid fa-language' },
+        { label: 'Historia', icon: 'fa-solid fa-landmark' },
+        { label: 'Geografía', icon: 'fa-solid fa-globe' },
+        { label: 'Arte', icon: 'fa-solid fa-paintbrush' },
+        { label: 'Música', icon: 'fa-solid fa-music' },
+        { label: 'Educación Física', icon: 'fa-solid fa-running' },
+        { label: 'Literatura', icon: 'fa-solid fa-book' },
+        { label: 'Ciencias Sociales', icon: 'fa-solid fa-users' },
+        { label: 'Ciencias Naturales', icon: 'fa-solid fa-leaf' },
+        { label: 'Computación', icon: 'fa-solid fa-desktop' },
+        { label: 'Aymara', icon: 'fa-solid fa-comments' },
+        { label: 'Lenguaje', icon: 'fa-solid fa-comment-dots' },
+        { label: 'Quechua', icon: 'fa-solid fa-comments' },
+        { label: 'Música', icon: 'fa-solid fa-music' },
+        { label: 'Educación Física', icon: 'fa-solid fa-running' },
+        { label: 'Otros', icon: 'fa-solid fa-ellipsis' }
       ]
     };
   },
