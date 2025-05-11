@@ -70,10 +70,10 @@
           >
             <q-item-section avatar>
               <q-icon :name="$route.path === link.link ? 'o_' + link.icon : link.icon"
-                      :class="$route.path === link.link ? 'text-black' : ''" />
+                      :class="$route.path === link.link ? 'text-black' : 'text-grey'" />
             </q-item-section>
             <q-item-section>
-              <q-item-label :class="$route.path === link.link ? 'text-black text-bold' : ''">
+              <q-item-label :class="$route.path === link.link ? 'text-black text-bold' : 'text-grey'">
                 {{ link.title }}
               </q-item-label>
             </q-item-section>
