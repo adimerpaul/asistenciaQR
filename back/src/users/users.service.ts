@@ -27,9 +27,10 @@ export class UsersService {
       throw new NotFoundException('Contraseña incorrecta');
     }
     const payload = {
-        id: user.id,
-        username: user.username,
-        name: user.name,
+      id: user.id,
+      username: user.username,
+      name: user.name,
+      avatar: user.avatar,
     }
     const token = await this.jwtService.signAsync(payload);
 
