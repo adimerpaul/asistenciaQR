@@ -29,6 +29,7 @@ model Users {
   updatedAt    DateTime?     @updatedAt
   deleteAt     DateTime?
   asistecias   Asistencias[]
+  userId       Int?
 }
 
 model Asistencias {

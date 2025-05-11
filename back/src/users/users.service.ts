@@ -29,6 +29,7 @@ export class UsersService {
     const payload = {
       id: user.id,
       username: user.username,
+      role: user.role,
       name: user.name,
       avatar: user.avatar,
     }

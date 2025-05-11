@@ -13,6 +13,7 @@ CREATE TABLE `Users` (
     `createdAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NULL,
     `deleteAt` DATETIME(3) NULL,
+    `userId` INTEGER NULL,
 
     UNIQUE INDEX `Users_username_key`(`username`),
     PRIMARY KEY (`id`)

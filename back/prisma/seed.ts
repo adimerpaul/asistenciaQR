@@ -70,11 +70,11 @@ async function main() {
     await prisma.users.create({
       data: {
         name: estudiantes[i],
-        // apellidos: apellidos,
         username,
         role: 'Estudiante',
         password: hash,
         passwordText: '123456',
+        userId: 2
       },
     });
   }
