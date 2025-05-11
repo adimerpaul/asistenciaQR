@@ -15,23 +15,33 @@ datasource db {
 }
 
 model Users {
-  id           Int           @id @default(autoincrement())
+  id           Int       @id @default(autoincrement())
   name         String
-  avatar       String        @default("default.png")
+  avatar       String    @default("default.png")
   fecha_nac    DateTime?
   telefono     String?
   direccion    String?
-  username     String?       @unique
-  role         String        @default("Estudiante")
+  username     String?   @unique
+  role         String    @default("Estudiante")
   password     String?
   passwordText String?
-  createdAt    DateTime?     @default(now())
-  updatedAt    DateTime?     @updatedAt
+  createdAt    DateTime? @default(now())
+  updatedAt    DateTime? @updatedAt
   deleteAt     DateTime?
-  asistecias   Asistencias[]
-  docente      Users?        @relation("DocenteEstudiante", fields: [userId], references: [id])
-  estudiante   Users[]       @relation("DocenteEstudiante")
-  userId       Int?
+
+  // Relaciones con asistencia
+  asistecias Asistencias[]
+
+  // Relación de tipo autorreferencia: estudiante - docente
+  docente    Users?  @relation("DocenteEstudiante", fields: [userId], references: [id])
+  estudiante Users[] @relation("DocenteEstudiante")
+  userId     Int?
+
+  // Relación con cursos como estudiante
+  cursos Cursos[] @relation("CursosEstudiantes")
+
+  // Relación con cursos como docente
+  cursosDocente Cursos[] @relation("CursosDocente")
 }
 
 model Asistencias {
@@ -44,4 +54,21 @@ model Asistencias {
   deleteAt  DateTime?
   Users     Users?    @relation(fields: [userId], references: [id])
   userId    Int?
+}
+
+model Cursos {
+  id          Int       @id @default(autoincrement())
+  nombre      String
+  descripcion String?
+  icono       String?
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
+  deleteAt    DateTime?
+
+  // Muchos estudiantes (relación N:M con Users)
+  Users Users[] @relation("CursosEstudiantes")
+
+  // Un solo docente (relación 1:N con Users)
+  docente Users? @relation("CursosDocente", fields: [userId], references: [id])
+  userId  Int?
 }
