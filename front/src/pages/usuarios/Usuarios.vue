@@ -83,7 +83,7 @@
 <!--        </q-td>-->
 <!--      </template>-->
     </q-table>
-        <pre>{{ users }}</pre>
+<!--        <pre>{{ users }}</pre>-->
     <q-dialog v-model="userDialog" persistent>
       <q-card style="width: 400px">
         <q-card-section class="q-pb-none row items-center">
