@@ -80,7 +80,7 @@
           </q-item>
         </template>
 
-        <q-item clickable class="text-black" @click="logout" v-close-popup>
+        <q-item clickable class="text-grey" @click="logout" v-close-popup>
           <q-item-section avatar>
             <q-icon name="logout" />
           </q-item-section>
