@@ -32,20 +32,20 @@
               </q-item>
               <q-item clickable @click="userEditPassword(props.row)" v-close-popup>
                 <q-item-section avatar>
-                  <q-icon name="edit" />
+                  <q-icon name="lock_reset" />
                 </q-item-section>
                 <q-item-section>
                   <q-item-label>Cambiar contraseña</q-item-label>
                 </q-item-section>
               </q-item>
-              <q-item clickable @click="permisosShow(props.row)" v-close-popup>
-                <q-item-section avatar>
-                  <q-icon name="lock" />
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>Permisos</q-item-label>
-                </q-item-section>
-              </q-item>
+<!--              <q-item clickable @click="permisosShow(props.row)" v-close-popup>-->
+<!--                <q-item-section avatar>-->
+<!--                  <q-icon name="lock" />-->
+<!--                </q-item-section>-->
+<!--                <q-item-section>-->
+<!--                  <q-item-label>Permisos</q-item-label>-->
+<!--                </q-item-section>-->
+<!--              </q-item>-->
             </q-list>
           </q-btn-dropdown>
         </q-td>
@@ -57,24 +57,24 @@
                   text-color="white" dense  size="14px"/>
         </q-td>
       </template>
-      <template v-slot:body-cell-agencia="props">
-        <q-td :props="props">
-          <q-chip :label="props.row.agencia"
-                  :color="$filters.colorAgencia(props.row.agencia)"
-                  text-color="white" dense  size="14px"/>
-        </q-td>
-      </template>
-      <template v-slot:body-cell-permisos="props">
-        <q-td :props="props">
-          <ul class="pm-0">
-            <li class="pm-0" v-for="permiso in props.row.userPermisos" :key="permiso.id">
-              {{ permiso?.permiso?.nombre }}
-            </li>
-          </ul>
-        </q-td>
-      </template>
+<!--      <template v-slot:body-cell-agencia="props">-->
+<!--        <q-td :props="props">-->
+<!--          <q-chip :label="props.row.agencia"-->
+<!--                  :color="$filters.colorAgencia(props.row.agencia)"-->
+<!--                  text-color="white" dense  size="14px"/>-->
+<!--        </q-td>-->
+<!--      </template>-->
+<!--      <template v-slot:body-cell-permisos="props">-->
+<!--        <q-td :props="props">-->
+<!--          <ul class="pm-0">-->
+<!--            <li class="pm-0" v-for="permiso in props.row.userPermisos" :key="permiso.id">-->
+<!--              {{ permiso?.permiso?.nombre }}-->
+<!--            </li>-->
+<!--          </ul>-->
+<!--        </q-td>-->
+<!--      </template>-->
     </q-table>
-    <!--    <pre>{{ users }}</pre>-->
+        <pre>{{ users }}</pre>
     <!--    [-->
     <!--    {-->
     <!--    "id": 2,-->
@@ -165,9 +165,9 @@ export default {
         { name: 'actions', label: 'Acciones', align: 'center' },
         { name: 'name', label: 'Nombre', align: 'left', field: 'name' },
         { name: 'username', label: 'Usuario', align: 'left', field: 'username' },
-        { name: 'permisos', label: 'Permisos', align: 'left', field: 'permisos' },
+        // { name: 'permisos', label: 'Permisos', align: 'left', field: 'permisos' },
         { name: 'role', label: 'Rol', align: 'left', field: 'role' },
-        { name: 'agencia', label: 'Agencia', align: 'left', field: 'agencia' },
+        // { name: 'agencia', label: 'Agencia', align: 'left', field: 'agencia' },
       ],
       permissions: [],
       dialogPermisos: false
@@ -175,7 +175,7 @@ export default {
   },
   mounted() {
     this.usersGet()
-    this.permissionsGet()
+    // this.permissionsGet()
   },
   methods: {
     permisosPost() {

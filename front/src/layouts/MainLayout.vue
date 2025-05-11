@@ -27,7 +27,7 @@
                 <div style="width: 100px; white-space: normal; overflow-wrap: break-word;">
                   {{ $store.user.username }}
                   <br>
-                  <q-chip dense size="10px" :color="getColorRole" text-color="white">
+                  <q-chip dense size="10px" :color="$filters.color($store.user.role)" text-color="white">
                     {{ $store.user.role }}
                   </q-chip>
                 </div>
@@ -149,17 +149,17 @@ const filteredLinks = computed(() => {
   })
 })
 // computed
-const getColorRole = computed(() => {
-  const role = proxy.$store.user.role
-  if (role === 'Administrador') {
-    return 'red'
-  } else if (role === 'Docente') {
-    return 'green'
-  } else if (role === 'Estudiante') {
-    return 'blue'
-  }
-  return ''
-})
+// const getColorRole = computed(() => {
+//   const role = proxy.$store.user.role
+//   if (role === 'Administrador') {
+//     return 'red'
+//   } else if (role === 'Docente') {
+//     return 'green'
+//   } else if (role === 'Estudiante') {
+//     return 'blue'
+//   }
+//   return ''
+// })
 </script>
 
 <style>

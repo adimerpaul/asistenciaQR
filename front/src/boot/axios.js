@@ -3,6 +3,7 @@ import axios from 'axios'
 import {Alert} from "src/addons/Alert";
 import {useCounterStore} from "stores/example-store";
 import moment from "moment";
+import {computed} from "vue";
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;
 // If any client changes this (global) instance, it might be a
@@ -42,9 +43,10 @@ export default boot(({ app, router }) => {
       return lower.charAt(0).toUpperCase() + lower.slice(1)
     },
     color(role) {
-      if (role === 'Admin') return 'red'
-      if (role === 'Vendedor') return 'green'
-      return 'blue'
+      if (role === 'Administrador') return 'red'
+      if (role === 'Docente') return 'green'
+      if (role === 'Estudiante') return 'blue'
+      return 'grey'
     },
     colorAgencia(agencia) {
       if (agencia === 'Oasis') return 'indigo'
