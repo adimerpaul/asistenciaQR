@@ -29,6 +29,31 @@ export class UsersService {
             },
         });
     }
+    async findOne(id: number) {
+        const user = await this.prisma.users.findUnique({
+            where: {
+                id: id,
+            },
+            select: {
+                id: true,
+                username: true,
+                name: true,
+                role: true,
+                avatar: true,
+                docente: {
+                    select: {
+                        id: true,
+                        name: true,
+                        username: true,
+                    }
+                }
+            }
+        });
+        if (!user) {
+            throw new NotFoundException('Usuario no encontrado');
+        }
+        return user;
+    }
   async login(body) {
     console.log(body);
     const { username, password } = body;

@@ -32,7 +32,9 @@ export class UsersController {
     @UseGuards(AuthGuard)
     @Get('me')
     me(@Request() req) {
-        return req.user;
+        // console.log(req.user);
+        const id = req.user.id;
+        return this.usersService.findOne(id);
     }
 
     @UseGuards(AuthGuard)
