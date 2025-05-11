@@ -9,6 +9,7 @@
           aria-label="Menu"
           @click="toggleLeftDrawer"
           unelevated
+          dense
         />
         <q-toolbar-title>
           <span class="text-caption text-bold">
@@ -20,13 +21,15 @@
           <q-btn-dropdown flat unelevated no-caps dropdownIcon="expand_more">
             <template v-slot:label>
               <q-avatar rounded>
-<!--                <q-icon name="account_circle" />-->
                 <q-img :src="`${$url}uploads/${$store.user.avatar}`" width="40px" height="40px" v-if="$store.user.avatar" />
-                <pre>asa</pre>
               </q-avatar>
               <div class="text-center" style="line-height: 1">
                 <div style="width: 100px; white-space: normal; overflow-wrap: break-word;">
-                  {{ $store.user.name }}
+                  {{ $store.user.username }}
+                  <br>
+                  <q-chip dense size="10px" :color="getColorRole" text-color="white">
+                    {{ $store.user.role }}
+                  </q-chip>
                 </div>
               </div>
             </template>
@@ -101,12 +104,11 @@ const { proxy } = getCurrentInstance()
 
 const linksList = [
   {title: 'Principal', icon: 'home', link: '/', can: 'Todos'},
-  {title: 'Usuarios', icon: 'people', link: '/usuarios', can: 1},
-  {title: 'Productos', icon: 'inventory', link: '/productos', can: 2},
-  {title: 'Ventas', icon: 'shopping_cart', link: '/ventas', can: 4},
-  {title: 'Crear Ventas', icon: 'add_shopping_cart', link: '/ventas/add', can: 3},
-  {title: 'Mascotas', icon: 'pets', link: '/mascotas', can: 6},
-  {title: 'Crear Mascota', icon: 'group_add', link: '/mascotas/create', can: 5},
+  {title: 'Usuarios', icon: 'people', link: '/usuarios', can: 'Administrador'},
+  // {title: 'Productos', icon: 'inventory', link: '/productos', can: 2}, ,
+  {title: 'Cursos', icon: 'school', link: '/cursos', can: ['Docente', 'Administrador']},
+  {title: 'Estudiantes', icon: 'groups', link: '/estudiantes', can: ['Docente', 'Administrador']},
+  {title: 'Asistencia', icon: 'check_circle', link: '/asistencia', can: ['Docente', 'Administrador']},
 ]
 
 const leftDrawerOpen = ref(false)
@@ -126,16 +128,37 @@ function logout() {
 }
 
 const filteredLinks = computed(() => {
-  const userPermissions = proxy.$store.user.userPermisos || []
-
-  const permissionIds = userPermissions.map(p => p.permisoId)
-
+  // const userPermissions = proxy.$store.user.userPermisos || []
+  //
+  // const permissionIds = userPermissions.map(p => p.permisoId)
+  //
+  // return linksList.filter(link => {
+  //   if (link.can === 'Todos') {
+  //     return true
+  //   }
+  //   return permissionIds.includes(link.can)
+  // })
   return linksList.filter(link => {
     if (link.can === 'Todos') {
       return true
     }
-    return permissionIds.includes(link.can)
+    if (Array.isArray(link.can)) {
+      return link.can.includes(proxy.$store.user.role)
+    }
+    return proxy.$store.user.role === link.can
   })
+})
+// computed
+const getColorRole = computed(() => {
+  const role = proxy.$store.user.role
+  if (role === 'Administrador') {
+    return 'red'
+  } else if (role === 'Docente') {
+    return 'green'
+  } else if (role === 'Estudiante') {
+    return 'blue'
+  }
+  return ''
 })
 </script>
 

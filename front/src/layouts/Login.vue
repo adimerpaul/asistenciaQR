@@ -195,12 +195,13 @@ export default {
         username: this.login.username,
         password: this.login.password,
       }).then(response => {
-        // console.log(response);
+        // console.log(response.data);
+        this.$store.isLogged = true;
         this.$store.user = response.data.user;
         localStorage.setItem('tokenAsistencia', response.data.token);
         localStorage.setItem('user', JSON.stringify(response.data.user));
-        this.$router.push('/');
         this.$alert.success('Bienvenido ' + response.data.user.name);
+        this.$router.push('/');
       }).catch(error => {
         this.loading = false;
         this.$alert.error(error.response.data.message || 'Error de conexión');
