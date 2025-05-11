@@ -50,7 +50,14 @@ export class UsersService {
                 username: true,
                 name: true,
                 role: true,
-                avatar: true
+                avatar: true,
+                docente: {
+                    select: {
+                        id: true,
+                        name: true,
+                        username: true,
+                    }
+                }
             }
         });
     }
@@ -106,5 +113,24 @@ export class UsersService {
           }
         });
         return updatedUser;
+    }
+    async passwordUpload(body, id) {
+        const user = await this.prisma.users.findUnique({
+            where: {
+                id: id,
+            },
+        });
+        if (!user) {
+            throw new NotFoundException('Usuario no encontrado');
+        }
+        const { newPassword } = body;
+        const updatedUser = await this.prisma.users.update({
+            where: {
+                id: id,
+            },
+            data: {
+                password: await bcrypt.hash(newPassword, 10),
+            },
+        });
     }
 }

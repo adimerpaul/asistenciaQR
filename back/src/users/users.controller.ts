@@ -25,7 +25,7 @@ export class UsersController {
     }
 
     @UseGuards(AuthGuard)
-    @Post('create')
+    @Post('')
     create(@Body() body) {
         return this.usersService.create(body);
     }
@@ -47,9 +47,12 @@ export class UsersController {
         return this.usersService.delete(id);
     }
 
-    // @UseGuards(AuthGuard)
-    // @Post('passwordUpload')
-    // passwordUpload(@Body() body) {
-    //     return this.usersService.passwordUpload(body);
-    // }
+    @UseGuards(AuthGuard)
+    @Put('updatePassword/:id')
+    passwordUpload(
+        @Param('id', ParseIntPipe) id: number,
+        @Body() body
+    ) {
+        return this.usersService.passwordUpload(body, id);
+    }
 }

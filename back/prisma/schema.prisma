@@ -29,6 +29,8 @@ model Users {
   updatedAt    DateTime?     @updatedAt
   deleteAt     DateTime?
   asistecias   Asistencias[]
+  docente      Users?        @relation("DocenteEstudiante", fields: [userId], references: [id])
+  estudiante   Users[]       @relation("DocenteEstudiante")
   userId       Int?
 }
 
