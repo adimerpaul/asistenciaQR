@@ -38,6 +38,14 @@
                   <q-item-label>Cambiar contraseña</q-item-label>
                 </q-item-section>
               </q-item>
+              <q-item clickable @click="cambiarAvatar(props.row)" v-close-popup>
+                <q-item-section avatar>
+                  <q-icon name="image" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>Cambiar avatar</q-item-label>
+                </q-item-section>
+              </q-item>
 <!--              <q-item clickable @click="permisosShow(props.row)" v-close-popup>-->
 <!--                <q-item-section avatar>-->
 <!--                  <q-icon name="lock" />-->
@@ -57,13 +65,14 @@
                   text-color="white" dense  size="14px"/>
         </q-td>
       </template>
-<!--      <template v-slot:body-cell-agencia="props">-->
-<!--        <q-td :props="props">-->
-<!--          <q-chip :label="props.row.agencia"-->
-<!--                  :color="$filters.colorAgencia(props.row.agencia)"-->
-<!--                  text-color="white" dense  size="14px"/>-->
-<!--        </q-td>-->
-<!--      </template>-->
+      <template v-slot:body-cell-avatar="props">
+        <q-td :props="props">
+          <q-avatar rounded>
+            <q-img :src="`${$url}uploads/${props.row.avatar}`" width="40px" height="40px" v-if="props.row.avatar" />
+            <q-icon name="person" size="40px" v-else />
+          </q-avatar>
+        </q-td>
+      </template>
 <!--      <template v-slot:body-cell-permisos="props">-->
 <!--        <q-td :props="props">-->
 <!--          <ul class="pm-0">-->
@@ -131,6 +140,33 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <q-dialog v-model="cambioAvatarDialogo" persistent>
+      <q-card>
+        <q-card-section class="q-pb-none row items-center text-bold">
+          Cambiar avatar
+          <q-space />
+          <q-btn icon="close" flat round dense @click="cambioAvatarDialogo = false" />
+        </q-card-section>
+        <q-card-section class="q-pt-none">
+          <q-form @submit="userPut()">
+<!--            <q-avatar>-->
+            <div>
+              <div style="position: relative;top: 0;left: 0;">
+                <q-btn icon="edit" size="10px" class="absolute q-mt-sm q-ml-sm" @click="$refs.fileInput.click()" dense outline label="Cambiar foto" no-caps />
+              </div>
+              <img :src="`${$url}uploads/${user.avatar}`" width="300px" height="300px" v-if="user.avatar" />
+              <q-icon name="person" size="100px" v-else />
+              <input ref="fileInput" type="file" style="display: none;" @change="onFileChange" accept="image/*" />
+            </div>
+<!--            </q-avatar>-->
+            <div class="text-right" >
+              <q-btn color="negative" label="Cancelar" @click="cambioAvatarDialogo = false" no-caps :loading="loading" />
+              <q-btn color="primary" label="Guardar" type="submit" no-caps :loading="loading" class="q-ml-sm" />
+            </div>
+          </q-form>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 <script>
@@ -151,12 +187,13 @@ export default {
         { name: 'actions', label: 'Acciones', align: 'center' },
         { name: 'name', label: 'Nombre', align: 'left', field: 'name' },
         { name: 'username', label: 'Usuario', align: 'left', field: 'username' },
-        // { name: 'permisos', label: 'Permisos', align: 'left', field: 'permisos' },
+        { name: 'avatar', label: 'Avatar', align: 'left', field: (row) =>  row.avatar },
         { name: 'role', label: 'Rol', align: 'left', field: 'role' },
         { name: 'docente', label: 'Docente', align: 'left', field: (row) =>  row.docente?.username },
       ],
       permissions: [],
-      dialogPermisos: false
+      dialogPermisos: false,
+      cambioAvatarDialogo: false,
     }
   },
   mounted() {
@@ -164,6 +201,29 @@ export default {
     // this.permissionsGet()
   },
   methods: {
+    onFileChange(event) {
+      const file = event.target.files[0]
+      const formData = new FormData()
+      formData.append('avatar', file)
+      this.loading = true
+      this.$axios.post('users/' + this.user.id + '/avatar', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(res => {
+        this.cambioAvatarDialogo = false
+        this.$alert.success('Avatar actualizado')
+        this.usersGet()
+      }).catch(error => {
+        this.$alert.error(error.response.data.message)
+      }).finally(() => {
+        this.loading = false
+      })
+    },
+    cambiarAvatar(user) {
+      this.cambioAvatarDialogo = true
+      this.user = { ...user }
+    },
     permisosPost() {
       this.loading = true
       const permissions = this.permissions.filter(p => p.checked).map(p => p.id)
