@@ -20,6 +20,7 @@ async function main() {
         username: 'admin',
         role: 'Administrador',
         password: hash,
+        passwordText: '123456',
       },
       {
         name: 'Adimer Paul chambi Ajata',
@@ -27,6 +28,7 @@ async function main() {
         username: 'adimer',
         role: 'Docente',
         password: hash,
+        passwordText: '123456',
       },
     ],
   });
@@ -72,6 +74,7 @@ async function main() {
         username,
         role: 'Estudiante',
         password: hash,
+        passwordText: '123456',
       },
     });
   }

@@ -14,35 +14,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// model Estudiante {
-//   id         Int       @id @default(autoincrement())
-//   nombres    String
-//   apellidos  String
-//   fecha_nac  DateTime?
-//   email      String?   @unique
-//   telefono   String?
-//   direccion  String?
-//   ciudad     String?
-//   estado     String?
-//   created_at DateTime? @default(now())
-//   updated_at DateTime? @updatedAt
-//   delete_at  DateTime?
-// }
-
 model Users {
-  id         Int           @id @default(autoincrement())
-  name       String
+  id           Int           @id @default(autoincrement())
+  name         String
   // apellidos  String
-  fecha_nac  DateTime?
-  telefono   String?
-  direccion  String?
-  username   String?       @unique
-  role       String        @default("Estudiante")
-  password   String?
-  createdAt  DateTime?     @default(now())
-  updatedAt  DateTime?     @updatedAt
-  deleteAt   DateTime?
-  asistecias Asistencias[]
+  fecha_nac    DateTime?
+  telefono     String?
+  direccion    String?
+  username     String?       @unique
+  role         String        @default("Estudiante")
+  password     String?
+  passwordText String?
+  createdAt    DateTime?     @default(now())
+  updatedAt    DateTime?     @updatedAt
+  deleteAt     DateTime?
+  asistecias   Asistencias[]
 }
 
 model Asistencias {
